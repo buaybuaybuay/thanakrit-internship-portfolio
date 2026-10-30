@@ -1,0 +1,788 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Thanakrit QA Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600&family=Prompt:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: calm light-blue "report" look. Tinted hero band, white content panels on a cool grey ground,
+   a project index near the top so the four projects are clear at once, QA project given its own large section.
+   Blue accent for structure; green and amber are reserved for test status (PASS / needs investigation). */
+:root{
+  --bg:#f3f6f9; --surface:#ffffff; --tint:#e8f0f8; --photo:#d3e2f1;
+  --ink:#1b2a3a; --mute:#566676; --line:#dae2ea;
+  --accent:#2b6cb0; --on-accent:#ffffff;
+  --pass:#1f6b49; --pass-bg:#e0f1e7; --warn:#8a5a00; --warn-bg:#fbf0d5; --warn-line:#e6cf93;
+  --display:'Prompt','Noto Sans Thai',system-ui,sans-serif;
+  --body:'Noto Sans Thai','Prompt',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1620; --surface:#16202c; --tint:#142131; --photo:#1d2d40;
+  --ink:#e6edf4; --mute:#93a3b4; --line:#263544;
+  --accent:#7db3e6; --on-accent:#0d1824;
+  --pass:#74c8a0; --pass-bg:#173325; --warn:#e2b552; --warn-bg:#2b2410; --warn-line:#5c4a1c;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1620; --surface:#16202c; --tint:#142131; --photo:#1d2d40;
+  --ink:#e6edf4; --mute:#93a3b4; --line:#263544;
+  --accent:#7db3e6; --on-accent:#0d1824;
+  --pass:#74c8a0; --pass-bg:#173325; --warn:#e2b552; --warn-bg:#2b2410; --warn-line:#5c4a1c;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.75;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--surface);z-index:30}
+[hidden]{display:none!important}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+
+/* header */
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:6px 22px;flex-wrap:wrap;padding-block:10px}
+.brand{font:600 17px var(--display);color:var(--ink);text-decoration:none;white-space:nowrap}
+nav{display:flex;gap:4px;flex:1 1 320px;overflow-x:auto;min-width:0;scrollbar-width:none}
+nav a{font-size:14px;color:var(--mute);text-decoration:none;white-space:nowrap;padding:5px 12px;border-radius:6px}
+nav a:hover{color:var(--ink);background:var(--tint)}
+nav a.hl{color:var(--accent);background:var(--tint);font-weight:600}
+.lang{display:flex;gap:2px;margin-left:auto;border:1px solid var(--line);border-radius:8px;padding:2px}
+.lang button{font:500 12px var(--mono);background:none;border:0;color:var(--mute);padding:4px 10px;border-radius:6px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+
+/* type */
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance}
+h1{font-size:clamp(36px,6.2vw,60px);line-height:1.12;letter-spacing:-.01em}
+h2{font-size:clamp(26px,4vw,36px);line-height:1.3;margin-bottom:12px}
+h3{font-size:20px;line-height:1.45;margin-bottom:6px}
+p{margin:0 0 14px}
+.eyebrow{font:600 14px var(--body);color:var(--accent);margin:0 0 10px;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.sub{color:var(--mute);max-width:64ch}
+.note{font-size:13px;color:var(--mute);margin:12px 0 0;max-width:80ch}
+section{padding-block:72px}
+.chip{display:inline-block;font:500 12px/1.6 var(--body);padding:1px 11px;border-radius:999px;border:1px solid var(--line);color:var(--mute);background:var(--surface);white-space:nowrap}
+.chip.qa{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{font:500 15px var(--body);padding:11px 22px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);text-decoration:none;cursor:pointer;display:inline-block}
+.btn.quiet{background:transparent;color:var(--accent)}
+.btn:hover{filter:brightness(1.08)}
+
+/* hero */
+.hero{background:var(--tint);padding-block:60px 56px}
+.hero-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:32px 64px;align-items:center}
+.hero h1{margin:4px 0 16px}
+.hero .lead{font-size:18px;max-width:50ch;margin:0}
+.portrait{margin:0;position:relative;width:100%;aspect-ratio:1061/1483;background:var(--photo);border:1px solid var(--line);border-radius:16px;overflow:hidden;justify-self:end}
+.portrait img{position:absolute;left:0;bottom:0;width:100%;height:auto;display:block}
+.stats{margin-top:44px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 26px 22px}
+.stats-title{font:600 15px var(--body);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.stats-title a{font-weight:400;font-size:14px}
+.figs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:0}
+.figs div{min-width:0}
+.figs dt{font-size:13px;color:var(--mute);line-height:1.4}
+.figs dd{margin:2px 0 0;font:600 34px/1.2 var(--display);font-variant-numeric:tabular-nums}
+.figs .p dd{color:var(--pass)} .figs .w dd{color:var(--warn)}
+.ticks{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tg{display:flex;gap:3px;align-items:center}
+.tg i{display:block;width:12px;height:12px;border-radius:3px;background:var(--pass)}
+.tg i.w{background:var(--warn)}
+.tg span{font:400 12px var(--mono);color:var(--mute);margin-left:6px}
+
+/* about */
+.cols{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:48px}
+.cols p{max-width:60ch}
+.facts{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px 22px;align-self:start}
+.facts div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+.facts div:last-child{border-bottom:0}
+.facts dt{color:var(--mute);flex:none}
+.facts dd{margin:0;text-align:right}
+
+/* project index */
+.index{margin-top:28px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ihead{padding:9px 24px;font:600 13px var(--body);color:var(--mute);background:var(--bg);border-top:1px solid var(--line)}
+.ihead:first-child{border-top:0}
+.irow{display:grid;grid-template-columns:172px minmax(0,1fr) minmax(0,210px) 22px;gap:6px 22px;align-items:center;padding:18px 24px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.irow.main{background:var(--tint)}
+.irow:hover{background:var(--tint)}
+.irow .mid{min-width:0}
+.irow .nm{font:600 18px var(--display);display:block}
+.irow .ds{font-size:14px;color:var(--mute);display:block;margin-top:1px}
+.irow .rs{font-size:13px;color:var(--mute)}
+.irow .go{color:var(--accent);font-size:18px;text-align:right}
+
+/* QA project */
+section.featured{background:var(--surface);border-block:1px solid var(--line)}
+section.featured h2{font-size:clamp(30px,4.8vw,44px)}
+.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:28px 0 0}
+.meta div{background:var(--bg);border-radius:10px;padding:14px 16px;min-width:0}
+.meta dt{font-size:13px;color:var(--mute)}
+.meta dd{margin:2px 0 0;font-size:15px}
+.blk{margin-top:60px}
+.blk>h3{font-size:22px}
+.blk>.sub{margin-bottom:18px}
+.mods{display:grid;gap:10px}
+details.mod{background:var(--bg);border:1px solid var(--line);border-radius:10px}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto 22px;gap:14px;align-items:center;padding:16px 20px}
+summary::-webkit-details-marker{display:none}
+summary .nm{font:600 18px var(--display)}
+summary .nm small{display:block;font:400 13px var(--body);color:var(--mute);margin-top:1px}
+.res{font:500 13px var(--mono);white-space:nowrap;color:var(--mute)}
+.res .p{color:var(--pass)} .res .w{color:var(--warn)}
+summary::after{content:"+";font:400 22px var(--mono);color:var(--accent);text-align:center}
+details[open] summary::after{content:"\2212"}
+.tablebox{overflow-x:auto;padding:0 20px 18px}
+table{width:100%;min-width:560px;border-collapse:collapse;font-size:14px;background:var(--surface);border-radius:8px}
+th{font:600 12px var(--body);color:var(--mute);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:0}
+td.id{font:400 12px var(--mono);color:var(--mute);white-space:nowrap}
+.st{display:inline-block;font:500 11px var(--mono);letter-spacing:.04em;padding:1px 9px;border-radius:999px;white-space:nowrap}
+.st.p{color:var(--pass);background:var(--pass-bg)} .st.w{color:var(--warn);background:var(--warn-bg)}
+.tabgroup{display:block}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tabbtn{font:500 14px var(--body);background:var(--surface);color:var(--mute);border:1px solid var(--line);border-radius:8px;padding:7px 16px;cursor:pointer}
+.tabbtn:hover{color:var(--ink)}
+.tabbtn[aria-pressed="true"]{color:var(--on-accent);background:var(--accent);border-color:var(--accent)}
+.pages{display:grid;gap:14px}
+.pages img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px}
+.pairs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pairs div{background:var(--bg);border-radius:10px;padding:16px 18px}
+.pairs h4{font:600 13px var(--body);color:var(--accent);margin:0 0 4px}
+.pairs p{font-size:15px;margin:0}
+.pairs .u{color:var(--mute)}
+.open{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:12px;padding:24px 26px}
+.open h3{margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.open .sub{color:var(--ink);margin-bottom:6px}
+.tl{margin:14px 0 0;padding:0;list-style:none}
+.tl li{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid var(--warn-line);font-size:15px}
+.tl time{font:500 13px var(--mono);color:var(--warn)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid2 div{background:var(--bg);border-radius:10px;padding:18px 20px}
+.grid2 h4{font:600 16px var(--display);margin:0 0 4px}
+.grid2 p{font-size:15px;color:var(--mute);margin:0}
+.skills{margin:0;padding:0;list-style:none;display:grid;gap:0}
+.skills li{padding:11px 0 11px 30px;border-top:1px solid var(--line);position:relative;font-size:15px}
+.skills li:last-child{border-bottom:1px solid var(--line)}
+.skills li::before{content:"\2713";position:absolute;left:4px;top:11px;color:var(--pass);font-weight:600}
+.limits{background:var(--warn-bg);border-radius:12px;padding:22px 26px}
+.limits h3{font-size:18px}
+.limits p{font-size:15px;margin:0}
+
+/* other projects */
+.proj{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:32px;margin-top:20px}
+.proj-top{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px 52px;align-items:start}
+.kind{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.proj h3{font-size:26px;margin:0}
+.proj .tagline{font:500 15px var(--body);color:var(--accent);margin:2px 0 12px}
+.proj-top p{max-width:56ch}
+.proj .facts{background:none;border:0;border-radius:0;padding:0}
+.proj .facts div:first-child{border-top:1px solid var(--line)}
+.proj-media{margin-top:30px;max-width:760px}
+.shot{margin:0;background:#0b1118;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.shot.scroll{overflow-x:auto}
+.shot img{display:block;width:100%;height:auto}
+.shot.scroll img{min-width:640px}
+.themes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.theme{margin:0;min-width:0;display:grid;grid-template-columns:minmax(0,1fr);align-content:start}
+.theme .th-name,.theme .th-slider,.theme .th-btn{display:block}
+.theme .th-name{background:var(--tb);color:var(--tt);font:700 13px var(--body);letter-spacing:.3em;padding:26px 20px 18px;border:1px solid var(--tl);border-bottom:0;border-radius:8px 8px 0 0}
+.theme .th-slider{background:var(--tb);padding:0 20px 22px;border:1px solid var(--tl);border-top:0;border-bottom:0}
+.theme .th-slider i{display:block;position:relative;height:4px;border-radius:2px;background:var(--sl)}
+.theme .th-slider i::before{content:"";position:absolute;left:0;top:0;bottom:0;width:78%;border-radius:2px;background:linear-gradient(90deg,var(--g1),var(--g2),var(--g3))}
+.theme .th-slider i::after{content:"";position:absolute;left:78%;top:-6px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--hb);border:2px solid var(--bb);box-sizing:border-box}
+.theme .th-btn{background:var(--tb);padding:0 20px 24px;border:1px solid var(--tl);border-top:0;border-radius:0 0 8px 8px;position:relative;height:56px}
+.theme .th-btn::before{content:"START";position:absolute;left:20px;right:20px;top:0;height:30px;border-radius:6px;background:var(--bb);color:var(--bt);font:700 11px/30px var(--body);letter-spacing:.35em;text-align:center}
+.theme figcaption{font:400 12px var(--mono);color:var(--mute);margin-top:10px}
+
+/* report language and credentials */
+.report-language{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:18px 0}
+.report-language>span{font-size:14px;color:var(--mute)}
+.report-docs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.report-doc{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 18px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);text-decoration:none}
+.report-doc:hover{border-color:var(--accent);background:var(--tint)}
+.report-doc strong{display:block;font:600 16px var(--display)}
+.report-doc small{display:block;color:var(--mute);margin-top:2px}
+.report-doc .go{color:var(--accent);font-size:20px;flex:none}
+.evidence-shot{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.evidence-shot a{display:block;background:#f5f7fa}
+.evidence-shot img{display:block;width:100%;height:auto}
+.evidence-shot figcaption{padding:16px 18px;border-top:1px solid var(--line)}
+.evidence-shot figcaption strong{display:block;font:600 16px var(--display)}
+.evidence-shot figcaption span{display:block;margin-top:2px;color:var(--mute);font-size:14px;line-height:1.6}
+.cert-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px}
+.cert{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cert figure{margin:0;background:var(--bg);border-bottom:1px solid var(--line)}
+.cert figure a{display:block}
+.cert img{display:block;width:100%;height:280px;object-fit:contain;background:#fff}
+.cert-body{padding:22px 24px 24px}
+.cert-body .eyebrow{font-size:13px;margin-bottom:7px}
+.cert-body h3{font-size:22px}
+.cert-body .sub{font-size:15px}
+.cert-details{margin:18px 0;display:grid;gap:8px}
+.cert-details div{display:flex;justify-content:space-between;gap:16px;padding-top:8px;border-top:1px solid var(--line);font-size:14px}
+.cert-details dt{color:var(--mute)}
+.cert-details dd{margin:0;text-align:right}
+
+/* contact */
+.crows{margin-top:26px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 22px;max-width:760px}
+.cr{display:grid;grid-template-columns:130px minmax(0,1fr) auto;gap:6px 16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.cr:last-child{border-bottom:0}
+.cr .lb{font-size:14px;color:var(--mute)}
+.cr .val{font-size:16px;overflow-wrap:anywhere}
+.cr .val.mono{font-family:var(--mono);font-size:15px;user-select:all}
+.copy{font:500 13px var(--body);background:var(--tint);color:var(--accent);border:1px solid var(--line);border-radius:8px;padding:5px 14px;cursor:pointer}
+.cv-links{display:flex;flex-wrap:wrap;gap:8px} .cv-links .btn{font-size:13px;padding:8px 12px}
+.copy:hover{border-color:var(--accent)}
+#toast{font:500 13px var(--body);color:var(--pass);min-height:1.6em;margin-top:12px}
+footer{padding-block:34px 52px;color:var(--mute);font-size:13px}
+footer p{margin:0 0 4px}
+
+@media (max-width:860px){
+  .hero-top{grid-template-columns:minmax(0,1fr)}
+  .portrait{order:-1;max-width:200px;justify-self:start}
+  .cols,.proj-top{grid-template-columns:minmax(0,1fr);gap:24px}
+  .figs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pairs,.grid2,.themes,.report-docs,.cert-grid{grid-template-columns:minmax(0,1fr)}
+  .irow{grid-template-columns:minmax(0,1fr) 22px;padding:16px 18px}
+  .irow .chip{grid-column:1/-1;justify-self:start}
+  .irow .rs{grid-column:1}
+  .irow .go{grid-row:2;grid-column:2}
+}
+@media (max-width:520px){
+  section{padding-block:52px}
+  .hero{padding-block:36px 44px}
+  .figs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .meta{grid-template-columns:minmax(0,1fr)}
+  .proj{padding:22px 18px}
+  .tl li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .cr{grid-template-columns:minmax(0,1fr) auto}
+  .cr .lb{grid-column:1/-1}
+  .stats{padding:18px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
+<header class="bar"><div class="wrap">
+  <a class="brand" href="#top">Thanakrit Panich</a>
+  <nav aria-label="Sections">
+    <a href="#about" data-th="เกี่ยวกับ" data-en="About">เกี่ยวกับ</a>
+    <a href="#projects" data-th="โปรเจ็กต์ทั้งหมด" data-en="All projects">โปรเจ็กต์ทั้งหมด</a>
+    <a class="hl" href="#shoplab" data-th="โปรเจ็กต์ QA" data-en="QA project">โปรเจ็กต์ QA</a>
+    <a href="#others" data-th="โปรเจ็กต์อื่น ๆ" data-en="Other projects">โปรเจ็กต์อื่น ๆ</a>
+    <a href="#certificates" data-th="เกียรติบัตร" data-en="Certificates">เกียรติบัตร</a>
+    <a href="#contact" data-th="ติดต่อ" data-en="Contact">ติดต่อ</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" id="l-th" aria-pressed="true">TH</button>
+    <button type="button" id="l-en" aria-pressed="false">EN</button>
+  </div>
+</div></header>
+
+<main id="top">
+
+<section class="hero"><div class="wrap">
+  <div class="hero-top">
+    <div>
+      <p class="eyebrow"><span class="chip qa">QA Tester Intern</span><span data-th="ช่วงฝึกงาน 5 ม.ค. – 30 เม.ย. 2570" data-en="Internship 5 Jan – 30 Apr 2027">ช่วงฝึกงาน 5 ม.ค. – 30 เม.ย. 2570</span></p>
+      <h1>Thanakrit Panich</h1>
+      <p class="lead" data-th="นักศึกษาวิศวกรรมคอมพิวเตอร์ ปี 4 มหาวิทยาลัยศรีปทุม กำลังมองหาที่ฝึกงานตำแหน่ง QA Tester ฝึกทดสอบเชิงฟังก์ชันอย่างละเอียด จดผลจริง และไม่สรุปเกินหลักฐาน" data-en="A fourth-year Computer Engineering student at Sripatum University, looking for a QA Tester internship. I test functionality carefully, record real results, and never claim more than the evidence shows.">นักศึกษาวิศวกรรมคอมพิวเตอร์ ปี 4 มหาวิทยาลัยศรีปทุม กำลังมองหาที่ฝึกงานตำแหน่ง QA Tester ฝึกทดสอบเชิงฟังก์ชันอย่างละเอียด จดผลจริง และไม่สรุปเกินหลักฐาน</p>
+      <div class="btns">
+        <a class="btn" href="#shoplab" data-th="ดูโปรเจ็กต์ QA" data-en="View QA project">ดูโปรเจ็กต์ QA</a>
+        <a class="btn quiet" href="#contact" data-th="ติดต่อ" data-en="Contact">ติดต่อ</a>
+      </div>
+    </div>
+    <figure class="portrait">
+      <img src="img/portrait.webp" width="720" height="1006" alt="Portrait of Thanakrit Panich" fetchpriority="high">
+    </figure>
+  </div>
+  <div class="stats">
+    <p class="stats-title"><span data-th="ผลทดสอบโปรเจ็กต์ ShopLab" data-en="ShopLab test results">ผลทดสอบโปรเจ็กต์ ShopLab</span><a href="#shoplab" data-th="ดูรายละเอียด" data-en="See details">ดูรายละเอียด</a></p>
+    <dl class="figs">
+      <div><dt>Test cases</dt><dd>28</dd></div>
+      <div><dt data-th="โมดูล" data-en="Modules">โมดูล</dt><dd>3</dd></div>
+      <div class="p"><dt>Pass</dt><dd>27</dd></div>
+      <div class="w"><dt data-th="รอตรวจสอบ" data-en="Needs investigation">รอตรวจสอบ</dt><dd>1</dd></div>
+      <div><dt data-th="Fail ที่ยืนยัน" data-en="Confirmed fail">Fail ที่ยืนยัน</dt><dd>0</dd></div>
+    </dl>
+    <div class="ticks" id="ticks" role="img" aria-label="28 test cases: 27 pass, 1 needs investigation"></div>
+  </div>
+</div></section>
+
+<section id="about"><div class="wrap">
+  <div class="cols">
+    <div>
+      <p class="eyebrow" data-th="เกี่ยวกับผม" data-en="About me">เกี่ยวกับผม</p>
+      <h2 data-th="ผมเข้ากับคนง่าย เรียนรู้ไว อดทนเก่งครับ" data-en="I get along well with others, learn quickly, and stay resilient.">ผมเข้ากับคนง่าย เรียนรู้ไว อดทนเก่งครับ</h2>
+      <p data-th="ผมฝึกทำ functional QA กับเว็บอีคอมเมิร์ซจำลอง โดยออกแบบและรันเทสต์ 28 ข้อใน Login, Register และ Cart & Checkout ใช้ค่าขอบเขต (boundary value) ทดสอบทั้งกรณีปกติและกรณีผิดพลาด บันทึกผลจริงที่หน้าจอ และเปิดข้อสงสัยที่ยังขัดแย้งกันไว้จนกว่าจะตรวจสอบเสร็จ" data-en="I practiced functional QA on a local e-commerce demo by designing and executing 28 test cases across Login, Register, and Cart & Checkout. I used boundary-value data, checked positive and negative flows, recorded the actual UI feedback, and kept a conflicting observation open until it could be verified.">ผมฝึกทำ functional QA กับเว็บอีคอมเมิร์ซจำลอง โดยออกแบบและรันเทสต์ 28 ข้อใน Login, Register และ Cart &amp; Checkout ใช้ค่าขอบเขต (boundary value) ทดสอบทั้งกรณีปกติและกรณีผิดพลาด บันทึกผลจริงที่หน้าจอ และเปิดข้อสงสัยที่ยังขัดแย้งกันไว้จนกว่าจะตรวจสอบเสร็จ</p>
+      <p data-th="นอกจากงานทดสอบ ผมเคยทำงานออกแบบ UX/UI และแดชบอร์ดข้อมูล ดูได้ในหัวข้อโปรเจ็กต์อื่น ๆ" data-en="Besides testing, I have also worked on UX/UI design and a data dashboard. See Other projects below.">นอกจากงานทดสอบ ผมเคยทำงานออกแบบ UX/UI และแดชบอร์ดข้อมูล ดูได้ในหัวข้อโปรเจ็กต์อื่น ๆ</p>
+    </div>
+    <dl class="facts">
+      <div><dt data-th="ชื่อ" data-en="Name">ชื่อ</dt><dd>Thanakrit Panich</dd></div>
+      <div><dt data-th="คณะ" data-en="Faculty">คณะ</dt><dd data-th="เทคโนโลยีสารสนเทศ" data-en="Information Technology">เทคโนโลยีสารสนเทศ</dd></div>
+      <div><dt data-th="สาขา" data-en="Major">สาขา</dt><dd data-th="วิศวกรรมคอมพิวเตอร์" data-en="Computer Engineering">วิศวกรรมคอมพิวเตอร์</dd></div>
+      <div><dt data-th="มหาวิทยาลัย" data-en="University">มหาวิทยาลัย</dt><dd data-th="มหาวิทยาลัยศรีปทุม" data-en="Sripatum University">มหาวิทยาลัยศรีปทุม</dd></div>
+      <div><dt data-th="ชั้นปี" data-en="Year">ชั้นปี</dt><dd data-th="ปีที่ 4" data-en="4th year">ปีที่ 4</dd></div>
+      <div><dt data-th="ช่วงฝึกงาน" data-en="Internship">ช่วงฝึกงาน</dt><dd data-th="5 มกราคม – 30 เมษายน 2570" data-en="5 Jan – 30 Apr 2027 (B.E. 2570)">5 มกราคม – 30 เมษายน 2570</dd></div>
+    </dl>
+  </div>
+</div></section>
+
+<section id="projects" style="padding-top:8px"><div class="wrap">
+  <p class="eyebrow" data-th="โปรเจ็กต์" data-en="Projects">โปรเจ็กต์</p>
+  <h2 data-th="โปรเจ็กต์ทั้งหมดของผม" data-en="All of my projects">โปรเจ็กต์ทั้งหมดของผม</h2>
+  <p class="sub" data-th="มี 4 โปรเจ็กต์ แบ่งเป็นงาน QA (ผลงานหลัก) 1 งาน และงานอื่น ๆ อีก 3 งาน กดที่แถวเพื่อดูรายละเอียด" data-en="Four projects: one QA project (the featured work) and three other projects. Select a row to see the details.">มี 4 โปรเจ็กต์ แบ่งเป็นงาน QA (ผลงานหลัก) 1 งาน และงานอื่น ๆ อีก 3 งาน กดที่แถวเพื่อดูรายละเอียด</p>
+  <div class="index">
+    <div class="ihead" data-th="โปรเจ็กต์ QA (ผลงานหลัก)" data-en="QA project (featured)">โปรเจ็กต์ QA (ผลงานหลัก)</div>
+    <a class="irow main" href="#shoplab">
+      <span class="chip qa" data-th="QA · ทดสอบซอฟต์แวร์" data-en="QA · Software testing">QA · ทดสอบซอฟต์แวร์</span>
+      <span class="mid"><span class="nm">ShopLab</span><span class="ds" data-th="ทดสอบเว็บอีคอมเมิร์ซจำลอง: Login, Register, Cart &amp; Checkout" data-en="Testing a demo e-commerce site: Login, Register, Cart &amp; Checkout">ทดสอบเว็บอีคอมเมิร์ซจำลอง: Login, Register, Cart &amp; Checkout</span></span>
+      <span class="rs" data-th="28 test cases · 27 PASS · 1 รอตรวจสอบ" data-en="28 test cases · 27 PASS · 1 under investigation">28 test cases · 27 PASS · 1 รอตรวจสอบ</span>
+      <span class="go" aria-hidden="true">→</span>
+    </a>
+    <div class="ihead" data-th="โปรเจ็กต์อื่น ๆ (ไม่ใช่งาน QA)" data-en="Other projects (not QA)">โปรเจ็กต์อื่น ๆ (ไม่ใช่งาน QA)</div>
+    <a class="irow" href="#voiceboost">
+      <span class="chip" data-th="UX/UI · แอปเดสก์ท็อป" data-en="UX/UI · Desktop app">UX/UI · แอปเดสก์ท็อป</span>
+      <span class="mid"><span class="nm">VoiceBoost AI</span><span class="ds" data-th="ออกแบบ Theme และ UX/UI ของแอปลดเสียงรบกวนสำหรับประชุมออนไลน์" data-en="Theme and UX/UI design for a noise-reduction app for online meetings">ออกแบบ Theme และ UX/UI ของแอปลดเสียงรบกวนสำหรับประชุมออนไลน์</span></span>
+      <span class="rs" data-th="3 ธีม" data-en="3 themes">3 ธีม</span>
+      <span class="go" aria-hidden="true">→</span>
+    </a>
+    <a class="irow" href="#hydro">
+      <span class="chip" data-th="ข้อมูล · แดชบอร์ด" data-en="Data · Dashboard">ข้อมูล · แดชบอร์ด</span>
+      <span class="mid"><span class="nm">SmartHydroPonic Farm</span><span class="ds" data-th="แดชบอร์ด Grafana ดึงข้อมูลจากฐานข้อมูล InfluxDB" data-en="Grafana dashboard reading from an InfluxDB database">แดชบอร์ด Grafana ดึงข้อมูลจากฐานข้อมูล InfluxDB</span></span>
+      <span class="rs" data-th="4 พาเนล: Temp · PH · Humidity · Light" data-en="4 panels: Temp · PH · Humidity · Light">4 พาเนล: Temp · PH · Humidity · Light</span>
+      <span class="go" aria-hidden="true">→</span>
+    </a>
+    <a class="irow" href="#sabaitax">
+      <span class="chip" data-th="UX/UI · แอปมือถือ" data-en="UX/UI · Mobile app">UX/UI · แอปมือถือ</span>
+      <span class="mid"><span class="nm">SabaiTAX</span><span class="ds" data-th="ออกแบบ UX/UI ทั้งหมดของแอปคำนวณภาษีรายปีใน Figma" data-en="All UX/UI design for an annual tax calculator app, done in Figma">ออกแบบ UX/UI ทั้งหมดของแอปคำนวณภาษีรายปีใน Figma</span></span>
+      <span class="rs" data-th="ราว 30 หน้าจอ" data-en="About 30 screens">ราว 30 หน้าจอ</span>
+      <span class="go" aria-hidden="true">→</span>
+    </a>
+  </div>
+</div></section>
+
+<section id="shoplab" class="featured"><div class="wrap">
+  <p class="eyebrow"><span class="chip qa" data-th="โปรเจ็กต์ QA · ผลงานหลัก" data-en="QA project · Featured">โปรเจ็กต์ QA · ผลงานหลัก</span></p>
+  <h2 data-th="ShopLab: ทดสอบเว็บอีคอมเมิร์ซจำลอง" data-en="ShopLab: testing a demo e-commerce site">ShopLab: ทดสอบเว็บอีคอมเมิร์ซจำลอง</h2>
+  <p class="sub" data-th="โปรเจ็กต์ฝึกทดสอบเชิงฟังก์ชันบนเว็บอีคอมเมิร์ซจำลองที่ทำงานในเบราว์เซอร์เท่านั้น ครอบคลุมการเข้าสู่ระบบ การสมัครสมาชิก ตะกร้าสินค้าและการสั่งซื้อ" data-en="A functional testing practice project on a local, browser-only e-commerce demo, covering login, registration, the shopping cart and checkout.">โปรเจ็กต์ฝึกทดสอบเชิงฟังก์ชันบนเว็บอีคอมเมิร์ซจำลองที่ทำงานในเบราว์เซอร์เท่านั้น ครอบคลุมการเข้าสู่ระบบ การสมัครสมาชิก ตะกร้าสินค้าและการสั่งซื้อ</p>
+  <dl class="meta">
+    <div><dt data-th="ประเภท" data-en="Type">ประเภท</dt><dd data-th="โปรเจ็กต์ฝึก (Practice)" data-en="Practice project">โปรเจ็กต์ฝึก (Practice)</dd></div>
+    <div><dt data-th="ช่วงเวลา" data-en="Dates">ช่วงเวลา</dt><dd>11 – 16 Oct 2026</dd></div>
+    <div><dt data-th="ขอบเขต" data-en="Scope">ขอบเขต</dt><dd>Login · Register · Cart &amp; Checkout</dd></div>
+    <div><dt data-th="สภาพแวดล้อม" data-en="Environment">สภาพแวดล้อม</dt><dd data-th="เดโมในเครื่อง ไม่ได้บันทึก OS/เบราว์เซอร์" data-en="Local demo; OS/browser not recorded">เดโมในเครื่อง ไม่ได้บันทึก OS/เบราว์เซอร์</dd></div>
+  </dl>
+
+  <div class="blk">
+    <h3 data-th="ผลการทดสอบรายโมดูล" data-en="Results by module">ผลการทดสอบรายโมดูล</h3>
+    <p class="sub" data-th="กดแต่ละโมดูลเพื่อดูตารางเทสต์ทีละข้อ" data-en="Open a module to see its test cases one by one.">กดแต่ละโมดูลเพื่อดูตารางเทสต์ทีละข้อ</p>
+    <div class="mods">
+      <details class="mod">
+        <summary><span class="nm">Login<small>11 Oct 2026 · runs 01–10</small></span><span class="res"><span class="p">10 PASS</span> · 0 FAIL</span></summary>
+        <div class="tablebox"><table>
+          <thead><tr><th>ID</th><th>Scenario</th><th>Test data</th><th>Observed</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="id">01</td><td>Valid demo login</td><td>Valid credentials</td><td>Login succeeds</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">02</td><td>Password below minimum</td><td>Password 7 chars</td><td>Rejected with password-length message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">03</td><td>Username below minimum</td><td>Username 4 chars</td><td>Rejected with username-length message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">04</td><td>Username at minimum</td><td>Username 5 chars</td><td>Login succeeds</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">05</td><td>Username and password at maximum</td><td>15 / 20 chars</td><td>Login succeeds</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">06</td><td>Username above maximum</td><td>Username 16 chars</td><td>Rejected with username-length message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">07</td><td>Password at minimum</td><td>Password 8 chars</td><td>Login succeeds</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">08</td><td>Password at maximum</td><td>Password 20 chars</td><td>Login succeeds</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">09</td><td>Password above maximum</td><td>Password 21 chars</td><td>Rejected with password-length message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">10</td><td>Both fields blank</td><td>(blank) / (blank)</td><td>Rejected with required-fields message</td><td><span class="st p">PASS</span></td></tr>
+          </tbody></table></div>
+      </details>
+      <details class="mod">
+        <summary><span class="nm">Register<small>11 Oct 2026, retest 16 Oct 2026 · TC-REG-001–010</small></span><span class="res"><span class="p">9 PASS</span> · <span class="w">1 INVESTIGATE</span></span></summary>
+        <div class="tablebox"><table>
+          <thead><tr><th>ID</th><th>Scenario</th><th>Observed</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="id">REG-001</td><td>Valid registration (QAUser01)</td><td>Registration succeeds</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">REG-002</td><td>Password confirmation mismatch</td><td>Rejected with mismatch message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">REG-003</td><td>Missing username</td><td>Rejected with required-fields message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">REG-004</td><td>Password below minimum length</td><td>Rejected with password-length message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">REG-005</td><td>Password above maximum length</td><td>Rejected with password-length message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">REG-006</td><td>Username below minimum length</td><td>Rejected with username-length message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">REG-007</td><td>Username above maximum length</td><td>Rejected with username-length message</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">REG-008</td><td>Maximum accepted field lengths</td><td>Registration succeeds</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">REG-009</td><td>Duplicate username (QAUser01)</td><td>Conflicting observations, see open item below</td><td><span class="st w">NEEDS INVESTIGATION</span></td></tr>
+            <tr><td class="id">REG-010</td><td>All fields empty</td><td>Rejected with required-fields message</td><td><span class="st p">PASS</span></td></tr>
+          </tbody></table></div>
+      </details>
+      <details class="mod">
+        <summary><span class="nm">Cart &amp; Checkout<small>14 Oct 2026 · TC-CART-001–008</small></span><span class="res"><span class="p">8 PASS</span> · 0 FAIL</span></summary>
+        <div class="tablebox"><table>
+          <thead><tr><th>ID</th><th>Scenario</th><th>Observed</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="id">CART-001</td><td>Add product to cart</td><td>Wireless Mouse, qty 1, ฿390.00: “Wireless Mouse added to cart.”</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">CART-002</td><td>Update quantity</td><td>Qty 2: “Cart quantity updated.” Subtotal ฿780.00</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">CART-003</td><td>Minimum quantity / remove item</td><td>Decrease to 0: “Quantity cannot be less than 1. Item removed from cart.” Total ฿0.00</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">CART-004</td><td>Maximum quantity boundary</td><td>At qty 10, increment to 11: “Maximum quantity is 10 per product.” Quantity unchanged, subtotal ฿3,900.00</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">CART-005</td><td>Multiple products calculation</td><td>Mouse 10 × ฿390, Keyboard 1 × ฿1,290, Headphones 1 × ฿1,590. Total ฿6,780.00</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">CART-006</td><td>Place order with valid cart</td><td>Order placed successfully (simulated checkout, no payment); cart cleared</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">CART-007</td><td>Place order with empty cart</td><td>Place order button is disabled, preventing checkout</td><td><span class="st p">PASS</span></td></tr>
+            <tr><td class="id">CART-008</td><td>Reset cart</td><td>“Cart cleared, total reset to ฿0.00”</td><td><span class="st p">PASS</span></td></tr>
+          </tbody></table></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="blk" id="evidence">
+    <h3 data-th="ภาพหลักฐานจากการทดสอบ" data-en="Test evidence snapshots">ภาพหลักฐานจากการทดสอบ</h3>
+    <p class="sub" data-th="ตัวอย่างผลที่บันทึกจากเดโม ShopLab เลือกภาพเพื่อดูเคสสำคัญ และกดภาพเพื่อเปิดขนาดเต็ม" data-en="Selected observations recorded from the ShopLab demo. Choose a key case and select the image to open it full size.">ตัวอย่างผลที่บันทึกจากเดโม ShopLab เลือกภาพเพื่อดูเคสสำคัญ และกดภาพเพื่อเปิดขนาดเต็ม</p>
+    <div class="tabgroup">
+      <div class="tabs" role="group" aria-label="Test evidence snapshots">
+        <button type="button" class="tabbtn" data-tab="evidence-login-success" aria-pressed="true" data-th="Login สำเร็จ" data-en="Login success">Login สำเร็จ</button>
+        <button type="button" class="tabbtn" data-tab="evidence-login-user-min" aria-pressed="false" data-th="Username สั้นเกิน" data-en="Username too short">Username สั้นเกิน</button>
+        <button type="button" class="tabbtn" data-tab="evidence-login-password-max" aria-pressed="false" data-th="Password ยาวเกิน" data-en="Password too long">Password ยาวเกิน</button>
+        <button type="button" class="tabbtn" data-tab="evidence-register-success" aria-pressed="false" data-th="สมัครสำเร็จ" data-en="Registration success">สมัครสำเร็จ</button>
+        <button type="button" class="tabbtn" data-tab="evidence-register-duplicate" aria-pressed="false" data-th="ชื่อผู้ใช้ซ้ำ" data-en="Duplicate username">ชื่อผู้ใช้ซ้ำ</button>
+      </div>
+      <figure class="evidence-shot" data-pane="evidence-login-success">
+        <a href="img/shoplab-evidence/login-success.png" target="_blank" rel="noopener"><img src="img/shoplab-evidence/login-success.png" width="992" height="802" loading="lazy" alt="ShopLab evidence: successful login with the Goku1 demo account"></a>
+        <figcaption><strong data-th="Login สำเร็จด้วยบัญชีตัวอย่าง" data-en="Successful login with a demo account">Login สำเร็จด้วยบัญชีตัวอย่าง</strong><span data-th="TC-LOGIN-001 · ระบบแสดงข้อความต้อนรับหลังเข้าสู่ระบบด้วยข้อมูลที่ถูกต้อง" data-en="TC-LOGIN-001 · The system showed a welcome message after a valid sign-in.">TC-LOGIN-001 · ระบบแสดงข้อความต้อนรับหลังเข้าสู่ระบบด้วยข้อมูลที่ถูกต้อง</span></figcaption>
+      </figure>
+      <figure class="evidence-shot" data-pane="evidence-login-user-min" hidden>
+        <a href="img/shoplab-evidence/login-username-below-minimum.png" target="_blank" rel="noopener"><img src="img/shoplab-evidence/login-username-below-minimum.png" width="1000" height="811" loading="lazy" alt="ShopLab evidence: login validation error for a four-character username"></a>
+        <figcaption><strong data-th="Username สั้นกว่าขั้นต่ำ" data-en="Username below the minimum">Username สั้นกว่าขั้นต่ำ</strong><span data-th="TC-LOGIN-003 · ใส่ “Goku” 4 ตัวอักษร และระบบแจ้งว่าชื่อผู้ใช้ต้องมี 5–15 ตัวอักษร" data-en="TC-LOGIN-003 · Entered “Goku” (4 characters); the system required a username of 5–15 characters.">TC-LOGIN-003 · ใส่ “Goku” 4 ตัวอักษร และระบบแจ้งว่าชื่อผู้ใช้ต้องมี 5–15 ตัวอักษร</span></figcaption>
+      </figure>
+      <figure class="evidence-shot" data-pane="evidence-login-password-max" hidden>
+        <a href="img/shoplab-evidence/login-password-above-maximum.png" target="_blank" rel="noopener"><img src="img/shoplab-evidence/login-password-above-maximum.png" width="988" height="797" loading="lazy" alt="ShopLab evidence: login validation error for an overlong password"></a>
+        <figcaption><strong data-th="Password ยาวเกินกำหนด" data-en="Password above the maximum">Password ยาวเกินกำหนด</strong><span data-th="TC-LOGIN-009 · ระบบปฏิเสธรหัสผ่านที่เกินขอบเขต 8–20 ตัวอักษร" data-en="TC-LOGIN-009 · The system rejected a password outside the supported 8–20 character range.">TC-LOGIN-009 · ระบบปฏิเสธรหัสผ่านที่เกินขอบเขต 8–20 ตัวอักษร</span></figcaption>
+      </figure>
+      <figure class="evidence-shot" data-pane="evidence-register-success" hidden>
+        <a href="img/shoplab-evidence/register-success.png" target="_blank" rel="noopener"><img src="img/shoplab-evidence/register-success.png" width="495" height="459" loading="lazy" alt="ShopLab evidence: successful local registration"></a>
+        <figcaption><strong data-th="สมัครสมาชิกสำเร็จ" data-en="Successful local registration">สมัครสมาชิกสำเร็จ</strong><span data-th="Register · ระบบยืนยันการสมัครเมื่อข้อมูลอยู่ในขอบเขตที่รองรับ" data-en="Register · The system confirmed registration when values were within the supported range.">Register · ระบบยืนยันการสมัครเมื่อข้อมูลอยู่ในขอบเขตที่รองรับ</span></figcaption>
+      </figure>
+      <figure class="evidence-shot" data-pane="evidence-register-duplicate" hidden>
+        <a href="img/shoplab-evidence/register-duplicate-username.png" target="_blank" rel="noopener"><img src="img/shoplab-evidence/register-duplicate-username.png" width="504" height="464" loading="lazy" alt="ShopLab evidence: registration rejected because the username already exists"></a>
+        <figcaption><strong data-th="ชื่อผู้ใช้ซ้ำถูกปฏิเสธ" data-en="Duplicate username rejected">ชื่อผู้ใช้ซ้ำถูกปฏิเสธ</strong><span data-th="TC-REG-009 · ภาพ retest แสดงว่าระบบแจ้ง “Username already exists.” เคสนี้ยังระบุเป็น Needs Investigation เพราะมีบันทึกการสังเกตก่อนหน้าที่ขัดแย้งกัน" data-en="TC-REG-009 · The retest showed “Username already exists.” This remains Needs Investigation because an earlier observation conflicted.">TC-REG-009 · ภาพ retest แสดงว่าระบบแจ้ง “Username already exists.” เคสนี้ยังระบุเป็น Needs Investigation เพราะมีบันทึกการสังเกตก่อนหน้าที่ขัดแย้งกัน</span></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="blk" id="reports">
+    <h3 data-th="รายงานการทดสอบ" data-en="Test reports">รายงานการทดสอบ</h3>
+    <p class="sub" data-th="เลือกภาษาและเอกสารที่ต้องการอ่าน รายงานภาษาอังกฤษแสดงในหน้านี้ ส่วนรายงานภาษาไทยเปิดเป็น PDF ฉบับเต็ม" data-en="Choose a language and report. English reports display on this page; full Thai reports open as PDFs.">เลือกภาษาและเอกสารที่ต้องการอ่าน รายงานภาษาอังกฤษแสดงในหน้านี้ ส่วนรายงานภาษาไทยเปิดเป็น PDF ฉบับเต็ม</p>
+    <div class="report-language" role="group" aria-label="Report language">
+      <span data-th="ภาษาของรายงาน:" data-en="Report language:">ภาษาของรายงาน:</span>
+      <button type="button" class="tabbtn report-lang-btn" data-report-lang="en" aria-pressed="true">English</button>
+      <button type="button" class="tabbtn report-lang-btn" data-report-lang="th" aria-pressed="false">ภาษาไทย</button>
+    </div>
+
+    <div data-report-version="en">
+      <div class="tabgroup">
+        <div class="tabs" role="group" aria-label="English reports">
+          <button type="button" class="tabbtn" data-tab="summary" aria-pressed="true" data-th="สรุปพอร์ตโฟลิโอ" data-en="Portfolio summary">สรุปพอร์ตโฟลิโอ</button>
+          <button type="button" class="tabbtn" data-tab="login" aria-pressed="false">Login</button>
+          <button type="button" class="tabbtn" data-tab="register" aria-pressed="false">Register</button>
+          <button type="button" class="tabbtn" data-tab="cart" aria-pressed="false">Cart &amp; Checkout</button>
+        </div>
+        <div class="pages" data-pane="summary">
+          <img src="reports/summary-p1.webp" width="1077" height="794" alt="ShopLab QA Tester Intern Portfolio, page 1: executive summary and test execution summary table">
+          <img src="reports/summary-p2.webp" width="1077" height="831" loading="lazy" alt="ShopLab QA Tester Intern Portfolio, page 2: findings for TC-REG-009 and TC-CART-007, limitations and portfolio statement">
+        </div>
+        <div class="pages" data-pane="login" hidden>
+          <img src="reports/login-p1.webp" width="1077" height="664" loading="lazy" alt="Login test execution report, page 1: summary and test matrix runs 01 to 05">
+          <img src="reports/login-p2.webp" width="1077" height="427" loading="lazy" alt="Login test execution report, page 2: test matrix runs 06 to 10">
+        </div>
+        <div class="pages" data-pane="register" hidden>
+          <img src="reports/register-p1.webp" width="1077" height="952" loading="lazy" alt="Register test execution report, page 1: summary and results TC-REG-001 to 007">
+          <img src="reports/register-p2.webp" width="1077" height="840" loading="lazy" alt="Register test execution report, page 2: results TC-REG-008 to 010 and investigation detail for TC-REG-009">
+        </div>
+        <div class="pages" data-pane="cart" hidden>
+          <img src="reports/cart-p1.webp" width="1077" height="927" loading="lazy" alt="Cart and checkout test execution report, page 1: execution parameters and results TC-CART-001 to 004">
+          <img src="reports/cart-p2.webp" width="1077" height="735" loading="lazy" alt="Cart and checkout test execution report, page 2: results TC-CART-004 to 008 and execution summary">
+        </div>
+        <p class="note" data-th="ภาพจากไฟล์ PDF รายงานภาษาอังกฤษของโปรเจ็กต์ ตัดขอบว่างออกเพื่อให้อ่านง่าย" data-en="Images from the project's English PDF reports, with blank margins trimmed for easier reading.">ภาพจากไฟล์ PDF รายงานภาษาอังกฤษของโปรเจ็กต์ ตัดขอบว่างออกเพื่อให้อ่านง่าย</p>
+      </div>
+    </div>
+
+    <div data-report-version="th" hidden>
+      <div class="report-docs">
+        <a class="report-doc" href="reports/th/ShopLab_QA_Tester_Intern_Portfolio_TH.pdf" target="_blank" rel="noopener">
+          <span><strong data-th="สรุปพอร์ตโฟลิโอ ShopLab" data-en="ShopLab portfolio summary">สรุปพอร์ตโฟลิโอ ShopLab</strong><small data-th="PDF ภาษาไทย · เปิดฉบับเต็ม" data-en="Thai PDF · Open full report">PDF ภาษาไทย · เปิดฉบับเต็ม</small></span><span class="go" aria-hidden="true">↗</span>
+        </a>
+        <a class="report-doc" href="reports/th/ShopLab_Login_Test_Execution_Report_TH.pdf" target="_blank" rel="noopener">
+          <span><strong>Login</strong><small data-th="รายงานผลการทดสอบ · PDF ภาษาไทย" data-en="Test execution report · Thai PDF">รายงานผลการทดสอบ · PDF ภาษาไทย</small></span><span class="go" aria-hidden="true">↗</span>
+        </a>
+        <a class="report-doc" href="reports/th/ShopLab_Register_Test_Execution_Report_TH.pdf" target="_blank" rel="noopener">
+          <span><strong>Register</strong><small data-th="รายงานผลการทดสอบ · PDF ภาษาไทย" data-en="Test execution report · Thai PDF">รายงานผลการทดสอบ · PDF ภาษาไทย</small></span><span class="go" aria-hidden="true">↗</span>
+        </a>
+        <a class="report-doc" href="reports/th/ShopLab_Cart_Test_Execution_Report_TH.pdf" target="_blank" rel="noopener">
+          <span><strong>Cart &amp; Checkout</strong><small data-th="รายงานผลการทดสอบ · PDF ภาษาไทย" data-en="Test execution report · Thai PDF">รายงานผลการทดสอบ · PDF ภาษาไทย</small></span><span class="go" aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <p class="note" data-th="กดชื่อรายงานเพื่อเปิดไฟล์ PDF ภาษาไทยในแท็บใหม่" data-en="Select a report to open its Thai PDF in a new tab.">กดชื่อรายงานเพื่อเปิดไฟล์ PDF ภาษาไทยในแท็บใหม่</p>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div class="open">
+      <p class="eyebrow" style="color:var(--warn)" data-th="เคสที่ยังเปิดอยู่" data-en="Open item">เคสที่ยังเปิดอยู่</p>
+      <h3>TC-REG-009 · Duplicate username <span class="st w">NEEDS INVESTIGATION</span></h3>
+      <p class="sub" data-th="เคสนี้ยังไม่ปิด แม้รอบ retest ล่าสุดผ่าน เพราะยังมีบันทึกเก่าที่ขัดแย้งกันและยังไม่ได้ตรวจสอบให้ตรงกัน" data-en="This case stays open. The latest retest behaved as expected, but an earlier conflicting observation has not been reconciled.">เคสนี้ยังไม่ปิด แม้รอบ retest ล่าสุดผ่าน เพราะยังมีบันทึกเก่าที่ขัดแย้งกันและยังไม่ได้ตรวจสอบให้ตรงกัน</p>
+      <ul class="tl">
+        <li><time data-th="สังเกตครั้งแรก" data-en="Earlier observation">สังเกตครั้งแรก</time><span data-th="ส่งชื่อผู้ใช้ซ้ำแล้วพบข้อความ “Registration successful. You can now log in.”" data-en="A duplicate submission was reported as “Registration successful. You can now log in.”">ส่งชื่อผู้ใช้ซ้ำแล้วพบข้อความ “Registration successful. You can now log in.”</span></li>
+        <li><time>16 Oct 2026</time><span data-th="Retest: เข้าสู่ระบบด้วย QAUser01 ได้ (“Login successful. Welcome, QAUser01!”) แล้วสมัครซ้ำด้วยชื่อเดิม ระบบปฏิเสธด้วย “Username already exists.” มีภาพหน้าจอ 2 ภาพ" data-en="Retest: logged in as QAUser01 (“Login successful. Welcome, QAUser01!”), then re-registered the same name. The app rejected it with “Username already exists.” Two screenshots recorded.">Retest: เข้าสู่ระบบด้วย QAUser01 ได้ (“Login successful. Welcome, QAUser01!”) แล้วสมัครซ้ำด้วยชื่อเดิม ระบบปฏิเสธด้วย “Username already exists.” มีภาพหน้าจอ 2 ภาพ</span></li>
+        <li><time data-th="ขั้นต่อไป" data-en="Next step">ขั้นต่อไป</time><span data-th="ทดสอบซ้ำในเบราว์เซอร์สถานะใหม่ จดข้อมูลที่กรอก ข้อความที่เห็น และสถานะการสมัคร แล้วเทียบกับทั้งสองการสังเกต" data-en="Repeat in a fresh browser state, capture the entered data, visible message and resulting registration state, then compare with both observations.">ทดสอบซ้ำในเบราว์เซอร์สถานะใหม่ จดข้อมูลที่กรอก ข้อความที่เห็น และสถานะการสมัคร แล้วเทียบกับทั้งสองการสังเกต</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk">
+    <h3 data-th="ค่าขอบเขตที่ทดสอบ" data-en="Boundary values tested">ค่าขอบเขตที่ทดสอบ</h3>
+    <div class="pairs">
+      <div><h4>Username</h4><p>4 · 5 · 15 · 16 <span class="u" data-th="ตัวอักษร" data-en="characters">ตัวอักษร</span></p></div>
+      <div><h4>Password</h4><p>7 · 8 · 20 · 21 <span class="u" data-th="ตัวอักษร" data-en="characters">ตัวอักษร</span></p></div>
+      <div><h4>Cart quantity</h4><p data-th="สูงสุด 10 ต่อสินค้า ลองเพิ่มเป็น 11 แล้วถูกบล็อก" data-en="Maximum 10 per product; an attempt to reach 11 was blocked">สูงสุด 10 ต่อสินค้า ลองเพิ่มเป็น 11 แล้วถูกบล็อก</p></div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <h3 data-th="วิธีทดสอบที่ใช้" data-en="Testing approach">วิธีทดสอบที่ใช้</h3>
+    <div class="grid2">
+      <div><h4>Functional testing</h4><p data-th="เทียบพฤติกรรมที่เห็นกับผลที่คาดหวังของแต่ละสถานการณ์" data-en="Compare observed behavior with the expected outcome for each scenario.">เทียบพฤติกรรมที่เห็นกับผลที่คาดหวังของแต่ละสถานการณ์</p></div>
+      <div><h4>Boundary Value Analysis</h4><p data-th="ทดสอบค่ารอบ ๆ ขอบเขต เช่น ความยาว 4/5/15/16 และ 7/8/20/21 และจำนวนสินค้า 10 ลองเพิ่มเป็น 11" data-en="Test values around each limit: lengths 4/5/15/16 and 7/8/20/21, and cart quantity 10 with an attempt to reach 11.">ทดสอบค่ารอบ ๆ ขอบเขต เช่น ความยาว 4/5/15/16 และ 7/8/20/21 และจำนวนสินค้า 10 ลองเพิ่มเป็น 11</p></div>
+      <div><h4>Positive &amp; negative testing</h4><p data-th="ตรวจทั้งเส้นทางที่สำเร็จ และกรณีผิดพลาด เช่น ช่องว่าง รหัสผ่านไม่ตรงกัน ความยาวไม่ถูกต้อง และชื่อผู้ใช้ซ้ำ" data-en="Verify success flows and validation for missing fields, mismatched passwords, invalid lengths and duplicate usernames.">ตรวจทั้งเส้นทางที่สำเร็จ และกรณีผิดพลาด เช่น ช่องว่าง รหัสผ่านไม่ตรงกัน ความยาวไม่ถูกต้อง และชื่อผู้ใช้ซ้ำ</p></div>
+      <div><h4>Evidence-based reporting</h4><p data-th="บันทึกข้อมูลทดสอบ ผลที่คาดหวัง ข้อความที่เห็นจริง และผลสรุป และเปิดข้อสงสัยไว้แทนการยืนยันเกินหลักฐาน" data-en="Record test data, expected behavior, actual UI feedback and verdict. Keep conflicting observations open rather than claiming certainty.">บันทึกข้อมูลทดสอบ ผลที่คาดหวัง ข้อความที่เห็นจริง และผลสรุป และเปิดข้อสงสัยไว้แทนการยืนยันเกินหลักฐาน</p></div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <h3 data-th="ทักษะที่ได้ฝึกจากโปรเจ็กต์นี้" data-en="Skills practiced in this project">ทักษะที่ได้ฝึกจากโปรเจ็กต์นี้</h3>
+    <ul class="skills">
+      <li data-th="เขียน test case ที่มีข้อมูลนำเข้าและผลที่คาดหวังชัดเจน" data-en="Writing functional test cases with concrete inputs and expected outcomes">เขียน test case ที่มีข้อมูลนำเข้าและผลที่คาดหวังชัดเจน</li>
+      <li data-th="ใช้ boundary value กับช่องข้อความและจำนวนสินค้าในตะกร้า" data-en="Applying boundary-value thinking to text fields and cart quantity limits">ใช้ boundary value กับช่องข้อความและจำนวนสินค้าในตะกร้า</li>
+      <li data-th="รันเทสต์ทั้งกรณีปกติและกรณีผิดพลาด พร้อมจดข้อความที่หน้าจอแสดงจริง" data-en="Executing positive and negative scenarios and recording actual UI feedback">รันเทสต์ทั้งกรณีปกติและกรณีผิดพลาด พร้อมจดข้อความที่หน้าจอแสดงจริง</li>
+      <li data-th="รายงานสถานะ PASS และ Needs Investigation โดยไม่ยืนยันเกินหลักฐาน" data-en="Reporting PASS and Needs Investigation without overstating certainty">รายงานสถานะ PASS และ Needs Investigation โดยไม่ยืนยันเกินหลักฐาน</li>
+      <li data-th="เห็นคุณค่าของการทำซ้ำได้ ข้อมูลสภาพแวดล้อม และภาพหน้าจอเป็นหลักฐาน" data-en="Recognizing the value of reproducibility, environment details and screenshot evidence">เห็นคุณค่าของการทำซ้ำได้ ข้อมูลสภาพแวดล้อม และภาพหน้าจอเป็นหลักฐาน</li>
+    </ul>
+  </div>
+
+  <div class="blk">
+    <div class="limits">
+      <h3 data-th="ขอบเขตและข้อจำกัด" data-en="Scope and limits">ขอบเขตและข้อจำกัด</h3>
+      <p data-th="งานนี้ทดสอบเชิงฟังก์ชันบนเดโมที่ทำงานในเบราว์เซอร์เท่านั้น ข้อมูลอยู่ในเบราว์เซอร์ ไม่ได้เชื่อมต่อ backend จริงหรือระบบชำระเงิน และการสั่งซื้อเป็นการจำลอง ไม่ได้อ้างว่าทดสอบ production, ฐานข้อมูล, security, performance หรือหลายเบราว์เซอร์ SQL และ API ศึกษาเป็นความรู้ แต่ยังไม่ได้รันกับฐานข้อมูลหรือ API จริงในรายงานเหล่านี้" data-en="This is functional testing of a browser-only demo. Data lives in the browser, there is no production backend or payment system, and checkout is simulated. It does not claim production, database, security, performance or cross-browser testing. SQL and API testing were studied as topics but not executed against a live database or API in these reports.">งานนี้ทดสอบเชิงฟังก์ชันบนเดโมที่ทำงานในเบราว์เซอร์เท่านั้น ข้อมูลอยู่ในเบราว์เซอร์ ไม่ได้เชื่อมต่อ backend จริงหรือระบบชำระเงิน และการสั่งซื้อเป็นการจำลอง ไม่ได้อ้างว่าทดสอบ production, ฐานข้อมูล, security, performance หรือหลายเบราว์เซอร์ SQL และ API ศึกษาเป็นความรู้ แต่ยังไม่ได้รันกับฐานข้อมูลหรือ API จริงในรายงานเหล่านี้</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="others"><div class="wrap">
+  <p class="eyebrow" data-th="โปรเจ็กต์อื่น ๆ" data-en="Other projects">โปรเจ็กต์อื่น ๆ</p>
+  <h2 data-th="โปรเจ็กต์อื่น ๆ (ไม่ใช่งาน QA)" data-en="Other projects (not QA)">โปรเจ็กต์อื่น ๆ (ไม่ใช่งาน QA)</h2>
+  <p class="sub" data-th="งานที่เคยทำนอกสาย QA แสดงทักษะเสริมด้านการออกแบบ UX/UI และการแสดงผลข้อมูล" data-en="Work outside QA that shows extra skills in UX/UI design and data visualization.">งานที่เคยทำนอกสาย QA แสดงทักษะเสริมด้านการออกแบบ UX/UI และการแสดงผลข้อมูล</p>
+
+  <article class="proj" id="voiceboost">
+    <div class="proj-top">
+      <div>
+        <p class="kind"><span class="chip" data-th="UX/UI" data-en="UX/UI">UX/UI</span><span class="chip" data-th="แอปเดสก์ท็อป" data-en="Desktop app">แอปเดสก์ท็อป</span></p>
+        <h3>VoiceBoost AI</h3>
+        <p class="tagline" data-th="ออกแบบ Theme และ UX/UI ของแอปลดเสียงรบกวน" data-en="Theme and UX/UI design for a noise-reduction app">ออกแบบ Theme และ UX/UI ของแอปลดเสียงรบกวน</p>
+        <p data-th="แอปเดสก์ท็อปสำหรับประชุมออนไลน์ ช่วยลดเสียงรบกวนด้วย AI (DeepFilterNet) และเพิ่มระดับเสียงไมค์ให้ปรับแต่งได้ ผมรับผิดชอบ Theme และ UX/UI ทั้งหมดของแอป" data-en="A desktop app for online meetings that reduces background noise with AI (DeepFilterNet) and lets you boost and tune the microphone. I was responsible for the app's entire theme and UX/UI.">แอปเดสก์ท็อปสำหรับประชุมออนไลน์ ช่วยลดเสียงรบกวนด้วย AI (DeepFilterNet) และเพิ่มระดับเสียงไมค์ให้ปรับแต่งได้ ผมรับผิดชอบ Theme และ UX/UI ทั้งหมดของแอป</p>
+      </div>
+      <dl class="facts">
+        <div><dt data-th="บทบาท" data-en="Role">บทบาท</dt><dd data-th="Theme และ UX/UI ทั้งหมด" data-en="Entire theme and UX/UI">Theme และ UX/UI ทั้งหมด</dd></div>
+        <div><dt data-th="ธีม" data-en="Themes">ธีม</dt><dd data-th="3 ธีม สลับด้วยปุ่มหลอดไฟ" data-en="3 themes, switched by a bulb button">3 ธีม สลับด้วยปุ่มหลอดไฟ</dd></div>
+        <div><dt data-th="ส่วนที่ออกแบบ" data-en="Components">ส่วนที่ออกแบบ</dt><dd data-th="ปุ่ม START/STOP, หน้าปัด Boost, ปุ่มทดสอบไมค์" data-en="START/STOP button, Boost dial, mic test button">ปุ่ม START/STOP, หน้าปัด Boost, ปุ่มทดสอบไมค์</dd></div>
+        <div><dt data-th="เครื่องมือ" data-en="Built with">เครื่องมือ</dt><dd>PyQt5</dd></div>
+      </dl>
+    </div>
+    <div class="proj-media">
+      <div class="themes">
+        <figure class="theme" style="--tb:#0d0d14;--tl:#1e1428;--tt:#ff6b35;--sl:#1e1428;--g1:#ff6b35;--g2:#cc3366;--g3:#ff9a5c;--hb:#ff6b35;--bb:#ff6b35;--bt:#0d0d14">
+          <div class="th-name">VOICEBOOST</div><div class="th-slider"><i></i></div><div class="th-btn" aria-hidden="true"></div>
+          <figcaption data-th="ember · มืด ส้ม-ชมพู" data-en="ember · dark, orange-pink">ember · มืด ส้ม-ชมพู</figcaption>
+        </figure>
+        <figure class="theme" style="--tb:#eef4f7;--tl:#cfe0e8;--tt:#0a4a6e;--sl:#cfe0e8;--g1:#0a4a6e;--g2:#1a8fbe;--g3:#5dcfee;--hb:#ffffff;--bb:#0a4a6e;--bt:#ffffff">
+          <div class="th-name">VOICEBOOST</div><div class="th-slider"><i></i></div><div class="th-btn" aria-hidden="true"></div>
+          <figcaption data-th="arctic · สว่าง ฟ้าน้ำทะเล" data-en="arctic · light, deep sea blue">arctic · สว่าง ฟ้าน้ำทะเล</figcaption>
+        </figure>
+        <figure class="theme" style="--tb:#0e1208;--tl:#1a2410;--tt:#a8e63d;--sl:#1a2410;--g1:#a8e63d;--g2:#3db86e;--g3:#00e5aa;--hb:#a8e63d;--bb:#a8e63d;--bt:#0e1208">
+          <div class="th-name">VOICEBOOST</div><div class="th-slider"><i></i></div><div class="th-btn" aria-hidden="true"></div>
+          <figcaption data-th="moss · มืด เขียวมะนาว" data-en="moss · dark, lime green">moss · มืด เขียวมะนาว</figcaption>
+        </figure>
+      </div>
+      <p class="note" data-th="ตัวอย่างสีจากค่าธีมในโค้ดของแอปจริง ไม่ใช่ภาพหน้าจอ" data-en="Swatches built from the theme values in the app's code, not a screenshot.">ตัวอย่างสีจากค่าธีมในโค้ดของแอปจริง ไม่ใช่ภาพหน้าจอ</p>
+    </div>
+  </article>
+
+  <article class="proj" id="hydro">
+    <div class="proj-top">
+      <div>
+        <p class="kind"><span class="chip" data-th="ข้อมูล" data-en="Data">ข้อมูล</span><span class="chip" data-th="แดชบอร์ด" data-en="Dashboard">แดชบอร์ด</span></p>
+        <h3>SmartHydroPonic Farm</h3>
+        <p class="tagline" data-th="แดชบอร์ดข้อมูลฟาร์มไฮโดรโปนิกส์" data-en="Data dashboard for a hydroponic farm">แดชบอร์ดข้อมูลฟาร์มไฮโดรโปนิกส์</p>
+        <p data-th="แดชบอร์ด Grafana สำหรับฟาร์มไฮโดรโปนิกส์อัจฉริยะ ดึงข้อมูลเซนเซอร์จากฐานข้อมูล InfluxDB มาแสดงผลแบบเกือบเรียลไทม์" data-en="A Grafana dashboard for a smart hydroponic farm. It reads sensor data from an InfluxDB database and shows it in near real time.">แดชบอร์ด Grafana สำหรับฟาร์มไฮโดรโปนิกส์อัจฉริยะ ดึงข้อมูลเซนเซอร์จากฐานข้อมูล InfluxDB มาแสดงผลแบบเกือบเรียลไทม์</p>
+      </div>
+      <dl class="facts">
+        <div><dt data-th="บทบาท" data-en="Role">บทบาท</dt><dd data-th="สร้างแดชบอร์ดและเชื่อมข้อมูล" data-en="Built the dashboard and data connection">สร้างแดชบอร์ดและเชื่อมข้อมูล</dd></div>
+        <div><dt data-th="แหล่งข้อมูล" data-en="Data source">แหล่งข้อมูล</dt><dd>InfluxDB</dd></div>
+        <div><dt data-th="พาเนล" data-en="Panels">พาเนล</dt><dd>Temp · PH · Humidity · Light</dd></div>
+        <div><dt data-th="การรีเฟรช" data-en="Refresh">การรีเฟรช</dt><dd data-th="ทุก 5 วินาที ช่วง 15 นาทีล่าสุด" data-en="Every 5 s, last 15 minutes">ทุก 5 วินาที ช่วง 15 นาทีล่าสุด</dd></div>
+      </dl>
+    </div>
+    <div class="proj-media">
+      <figure class="shot">
+        <img src="img/grafana-dashboard.png" width="1917" height="757" loading="lazy" alt="Grafana dashboard with Temp, PH, Humidity and Light panels">
+      </figure>
+      <p class="note" data-th="ภาพหน้าจอแดชบอร์ด ข้อมูลในภาพเป็นข้อมูลทดสอบ (series ชื่อ random_sensor_…) งานต้นฉบับเหลือเพียงภาพนี้" data-en="Dashboard screenshot. The data shown is test data (series named random_sensor_…). This image is all that remains of the original work.">ภาพหน้าจอแดชบอร์ด ข้อมูลในภาพเป็นข้อมูลทดสอบ (series ชื่อ random_sensor_…) งานต้นฉบับเหลือเพียงภาพนี้</p>
+    </div>
+  </article>
+
+  <article class="proj" id="sabaitax">
+    <div class="proj-top">
+      <div>
+        <p class="kind"><span class="chip" data-th="UX/UI" data-en="UX/UI">UX/UI</span><span class="chip" data-th="แอปมือถือ" data-en="Mobile app">แอปมือถือ</span><span class="chip">Figma</span></p>
+        <h3>SabaiTAX</h3>
+        <p class="tagline" data-th="ออกแบบ UX/UI แอปคำนวณภาษีรายปี" data-en="UX/UI design for an annual tax app">ออกแบบ UX/UI แอปคำนวณภาษีรายปี</p>
+        <p data-th="แอปคำนวณภาษีรายปีให้อัตโนมัติ ผมรับผิดชอบงาน UX/UI ทั้งหมดผ่าน Figma ตั้งแต่หน้าแรกเข้าใช้งาน การสมัครและเข้าสู่ระบบ จนถึงหน้าหลัก ภาษี และการตั้งค่า ด้วยธีมมืดและสีเน้นเขียวมิ้นต์" data-en="An app that calculates annual tax automatically. I was responsible for all of the UX/UI in Figma, from first launch, sign-up and login to the home, tax and settings screens, in a dark theme with a mint-green accent.">แอปคำนวณภาษีรายปีให้อัตโนมัติ ผมรับผิดชอบงาน UX/UI ทั้งหมดผ่าน Figma ตั้งแต่หน้าแรกเข้าใช้งาน การสมัครและเข้าสู่ระบบ จนถึงหน้าหลัก ภาษี และการตั้งค่า ด้วยธีมมืดและสีเน้นเขียวมิ้นต์</p>
+      </div>
+      <dl class="facts">
+        <div><dt data-th="บทบาท" data-en="Role">บทบาท</dt><dd data-th="UX/UI ทั้งหมด" data-en="All UX/UI">UX/UI ทั้งหมด</dd></div>
+        <div><dt data-th="เครื่องมือ" data-en="Tool">เครื่องมือ</dt><dd>Figma</dd></div>
+        <div><dt data-th="ขนาดงาน" data-en="Size">ขนาดงาน</dt><dd data-th="ราว 30 หน้าจอมือถือ" data-en="About 30 mobile screens">ราว 30 หน้าจอมือถือ</dd></div>
+        <div><dt>Prototype</dt><dd data-th="2 โฟลว์ (Flow 1, Flow 2)" data-en="2 flows (Flow 1, Flow 2)">2 โฟลว์ (Flow 1, Flow 2)</dd></div>
+      </dl>
+    </div>
+    <div class="proj-media tabgroup">
+      <div class="tabs" role="group" aria-label="Figma views">
+        <button type="button" class="tabbtn" data-tab="overview" aria-pressed="true" data-th="ภาพรวมหน้าจอ" data-en="Screen overview">ภาพรวมหน้าจอ</button>
+        <button type="button" class="tabbtn" data-tab="flow" aria-pressed="false" data-th="เส้นทางผู้ใช้ (Prototype flow)" data-en="User flows (prototype)">เส้นทางผู้ใช้ (Prototype flow)</button>
+      </div>
+      <figure class="shot scroll" data-pane="overview">
+        <img src="img/sabaitax-overview.png" width="942" height="823" loading="lazy" alt="SabaiTAX Figma file showing all mobile screens">
+      </figure>
+      <figure class="shot scroll" data-pane="flow" hidden>
+        <img src="img/sabaitax-flow.png" width="1039" height="839" loading="lazy" alt="SabaiTAX Figma prototype with connections between screens, labelled Flow 1 and Flow 2">
+      </figure>
+      <p class="note" data-th="ภาพจากไฟล์ Figma ของโปรเจ็กต์ ภาพที่สองแสดงเส้นเชื่อมระหว่างหน้าจอใน Prototype" data-en="Images from the project's Figma file. The second view shows the connections between screens in the prototype.">ภาพจากไฟล์ Figma ของโปรเจ็กต์ ภาพที่สองแสดงเส้นเชื่อมระหว่างหน้าจอใน Prototype</p>
+    </div>
+  </article>
+</div></section>
+
+<section id="certificates"><div class="wrap">
+  <p class="eyebrow" data-th="เกียรติบัตร" data-en="Certificates">เกียรติบัตร</p>
+  <h2 data-th="ใบรับรองและการเรียนรู้เพิ่มเติม" data-en="Credentials and additional learning">ใบรับรองและการเรียนรู้เพิ่มเติม</h2>
+  <p class="sub" data-th="ใบรับรองที่สะท้อนพื้นฐานด้าน AI, Cloud และ Machine Learning ของผม" data-en="Credentials that reflect my foundation in AI, cloud, and machine learning.">ใบรับรองที่สะท้อนพื้นฐานด้าน AI, Cloud และ Machine Learning ของผม</p>
+  <div class="cert-grid">
+    <article class="cert">
+      <figure><a href="img/huawei-hccda-ai.jpg" target="_blank" rel="noopener"><img src="img/huawei-hccda-ai.jpg" loading="lazy" alt="Huawei Cloud Developer Certification HCCDA-AI awarded to Thanakrit Panich"></a></figure>
+      <div class="cert-body">
+        <p class="eyebrow">HUAWEI CLOUD</p>
+        <h3>HCCDA-AI</h3>
+        <p class="sub" data-th="Huawei Cloud Developer Certification · AI" data-en="Huawei Cloud Developer Certification · AI">Huawei Cloud Developer Certification · AI</p>
+        <dl class="cert-details">
+          <div><dt data-th="สถานะ" data-en="Status">สถานะ</dt><dd data-th="Certified Developer Associate" data-en="Certified Developer Associate">Certified Developer Associate</dd></div>
+          <div><dt data-th="ใช้ได้ถึง" data-en="Valid until">ใช้ได้ถึง</dt><dd>21 Jul 2029</dd></div>
+        </dl>
+        <a class="btn quiet" href="img/huawei-hccda-ai.jpg" target="_blank" rel="noopener" data-th="ดูใบรับรอง" data-en="View certificate">ดูใบรับรอง</a>
+      </div>
+    </article>
+    <article class="cert">
+      <figure><a href="img/aws-machine-learning-foundations.png" target="_blank" rel="noopener"><img src="img/aws-machine-learning-foundations.png" loading="lazy" alt="AWS Academy Graduate Machine Learning Foundations training badge awarded to Thanakrit Panich"></a></figure>
+      <div class="cert-body">
+        <p class="eyebrow">AWS Academy</p>
+        <h3>Machine Learning Foundations</h3>
+        <p class="sub" data-th="AWS Academy Graduate · Training Badge" data-en="AWS Academy Graduate · Training Badge">AWS Academy Graduate · Training Badge</p>
+        <dl class="cert-details">
+          <div><dt data-th="ระยะเวลาเรียน" data-en="Course hours">ระยะเวลาเรียน</dt><dd>20 hours</dd></div>
+          <div><dt data-th="ออกให้วันที่" data-en="Issued on">ออกให้วันที่</dt><dd>04/02/2026</dd></div>
+        </dl>
+        <a class="btn quiet" href="https://www.credly.com/go/phQSEnw7" target="_blank" rel="noopener" data-th="ดู Digital Badge" data-en="View digital badge">ดู Digital Badge</a>
+      </div>
+    </article>
+  </div>
+</div></section>
+
+<section id="contact" style="border-top:1px solid var(--line)"><div class="wrap">
+  <p class="eyebrow" data-th="ติดต่อ" data-en="Contact">ติดต่อ</p>
+  <h2 data-th="หากทีมของคุณกำลังหาเด็กฝึกงาน QA" data-en="If your team is looking for a QA intern">หากทีมของคุณกำลังหาเด็กฝึกงาน QA</h2>
+  <p class="sub" data-th="ฝึกงานได้ตั้งแต่ 5 มกราคม ถึง 30 เมษายน 2570 ยินดีส่งรายงานการทดสอบและตอบคำถามเรื่องวิธีทดสอบครับ" data-en="Available from 5 January to 30 April 2027 (B.E. 2570). I am happy to share the test reports and answer questions about my approach.">ฝึกงานได้ตั้งแต่ 5 มกราคม ถึง 30 เมษายน 2570 ยินดีส่งรายงานการทดสอบและตอบคำถามเรื่องวิธีทดสอบครับ</p>
+  <div class="crows">
+    <div class="cr"><span class="lb" data-th="อีเมล" data-en="Email">อีเมล</span><span class="val mono" id="mail">thanakrit.pac@spumail.net</span><button type="button" class="copy" data-copy="mail" data-th="คัดลอก" data-en="Copy">คัดลอก</button></div>
+    <div class="cr"><span class="lb" data-th="โทร" data-en="Phone">โทร</span><span class="val mono" id="tel">064-3386245</span><button type="button" class="copy" data-copy="tel" data-th="คัดลอก" data-en="Copy">คัดลอก</button></div>
+    <div class="cr"><span class="lb" data-th="สังกัด" data-en="Faculty">สังกัด</span><span class="val" data-th="คณะเทคโนโลยีสารสนเทศ สาขาวิศวกรรมคอมพิวเตอร์ มหาวิทยาลัยศรีปทุม ชั้นปีที่ 4" data-en="Faculty of Information Technology, Computer Engineering, Sripatum University, 4th year">คณะเทคโนโลยีสารสนเทศ สาขาวิศวกรรมคอมพิวเตอร์ มหาวิทยาลัยศรีปทุม ชั้นปีที่ 4</span><span></span></div>
+    <div class="cr"><span class="lb" data-th="ประวัติย่อ (CV)" data-en="Curriculum Vitae">ประวัติย่อ (CV)</span><span class="val cv-links"><a class="btn quiet" href="cv/Thanakrit_Panich_QA_Tester_Intern_CV_TH.pdf" download="Thanakrit_Panich_QA_Tester_Intern_CV_TH.pdf" data-th="ดาวน์โหลด CV ภาษาไทย" data-en="Download Thai CV">ดาวน์โหลด CV ภาษาไทย</a><a class="btn quiet" href="cv/Thanakrit_Panich_QA_Tester_Intern_CV_EN.pdf" download="Thanakrit_Panich_QA_Tester_Intern_CV_EN.pdf" data-th="ดาวน์โหลด CV ภาษาอังกฤษ" data-en="Download English CV">ดาวน์โหลด CV ภาษาอังกฤษ</a></span><span></span></div>
+  </div>
+  <div id="toast" role="status"></div>
+</div></section>
+
+</main>
+
+<footer><div class="wrap">
+  <p>© 2026 Thanakrit Panich</p>
+  <p data-th="ผลทดสอบ ShopLab มาจากรายงานการทดสอบของผม" data-en="The ShopLab results come from my own test execution reports.">ผลทดสอบ ShopLab มาจากรายงานการทดสอบของผม</p>
+</div></footer>
+
+<script>
+(function(){
+  var lang='th';
+  try{var s=localStorage.getItem('pf-lang'); if(s==='en'||s==='th') lang=s;}catch(e){}
+  var $=function(id){return document.getElementById(id)};
+  var L=function(th,en){return lang==='th'?th:en};
+
+  function applyLang(){
+    document.documentElement.lang=lang;
+    [].forEach.call(document.querySelectorAll('[data-th]'),function(el){
+      var v=el.getAttribute('data-'+lang); if(v!==null) el.textContent=v;
+    });
+    $('l-th').setAttribute('aria-pressed',lang==='th');
+    $('l-en').setAttribute('aria-pressed',lang==='en');
+    try{localStorage.setItem('pf-lang',lang);}catch(e){}
+  }
+  $('l-th').onclick=function(){lang='th';applyLang()};
+  $('l-en').onclick=function(){lang='en';applyLang()};
+
+  /* one tick per test case, grouped by module */
+  var mods=[['Login',10,0],['Register',9,1],['Cart',8,0]], t=$('ticks');
+  mods.forEach(function(m){
+    var g=document.createElement('div'); g.className='tg';
+    for(var i=0;i<m[1];i++){g.appendChild(document.createElement('i'))}
+    for(var j=0;j<m[2];j++){var w=document.createElement('i'); w.className='w'; g.appendChild(w)}
+    var sp=document.createElement('span'); sp.textContent=m[0]+' '+(m[1]+m[2]); g.appendChild(sp);
+    t.appendChild(g);
+  });
+
+  /* tab groups: report pages and SabaiTAX views */
+  [].forEach.call(document.querySelectorAll('.tabgroup'),function(g){
+    var btns=[].slice.call(g.querySelectorAll('.tabbtn')), panes=[].slice.call(g.querySelectorAll('[data-pane]'));
+    btns.forEach(function(b){
+      b.addEventListener('click',function(){
+        var id=b.getAttribute('data-tab');
+        btns.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+        panes.forEach(function(p){p.hidden=(p.getAttribute('data-pane')!==id)});
+      });
+    });
+  });
+
+  /* switch between English previews and the full Thai PDF reports */
+  var reportLang='en';
+  function applyReportLang(){
+    [].forEach.call(document.querySelectorAll('.report-lang-btn'),function(b){
+      b.setAttribute('aria-pressed',b.getAttribute('data-report-lang')===reportLang?'true':'false');
+    });
+    [].forEach.call(document.querySelectorAll('[data-report-version]'),function(p){
+      p.hidden=(p.getAttribute('data-report-version')!==reportLang);
+    });
+  }
+  [].forEach.call(document.querySelectorAll('.report-lang-btn'),function(b){
+    b.addEventListener('click',function(){reportLang=b.getAttribute('data-report-lang');applyReportLang()});
+  });
+  applyReportLang();
+
+  /* copy buttons */
+  [].forEach.call(document.querySelectorAll('.copy'),function(b){
+    b.addEventListener('click',function(){
+      var el=$(b.getAttribute('data-copy')), box=$('toast');
+      function done(){box.textContent=L('คัดลอกแล้ว: ','Copied: ')+el.textContent}
+      function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);box.textContent=L('เลือกข้อความไว้แล้ว กด Ctrl+C เพื่อคัดลอก','Selected. Press Ctrl+C to copy.')}
+      try{navigator.clipboard.writeText(el.textContent).then(done,fallback)}catch(e){fallback()}
+    });
+  });
+
+  applyLang();
+})();
+</script>
+
+</body></html>
