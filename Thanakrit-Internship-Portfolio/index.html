@@ -229,7 +229,6 @@ td.id{font:400 12px var(--mono);color:var(--mute);white-space:nowrap}
 .cr .val{font-size:16px;overflow-wrap:anywhere}
 .cr .val.mono{font-family:var(--mono);font-size:15px;user-select:all}
 .copy{font:500 13px var(--body);background:var(--tint);color:var(--accent);border:1px solid var(--line);border-radius:8px;padding:5px 14px;cursor:pointer}
-.cv-links{display:flex;flex-wrap:wrap;gap:8px} .cv-links .btn{font-size:13px;padding:8px 12px}
 .copy:hover{border-color:var(--accent)}
 #toast{font:500 13px var(--body);color:var(--pass);min-height:1.6em;margin-top:12px}
 footer{padding-block:34px 52px;color:var(--mute);font-size:13px}
@@ -311,7 +310,8 @@ footer p{margin:0 0 4px}
   <div class="cols">
     <div>
       <p class="eyebrow" data-th="เกี่ยวกับผม" data-en="About me">เกี่ยวกับผม</p>
-      <h2 data-th="ผมเข้ากับคนง่าย เรียนรู้ไว อดทนเก่งครับ" data-en="I get along well with others, learn quickly, and stay resilient.">ผมเข้ากับคนง่าย เรียนรู้ไว อดทนเก่งครับ</h2>
+      <h2 data-th="นักศึกษาวิศวกรรมคอมพิวเตอร์ที่สนใจด้าน Software Quality Assurance" data-en="Computer Engineering student interested in Software Quality Assurance">นักศึกษาวิศวกรรมคอมพิวเตอร์ที่สนใจด้าน Software Quality Assurance</h2>
+      <p data-th="ผมมีความละเอียดรอบคอบ ชอบวิเคราะห์ปัญหา และสามารถทำงานร่วมกับทีมได้ดี มุ่งมั่นพัฒนาทักษะการทดสอบซอฟต์แวร์อย่างเป็นระบบ" data-en="I am detail-oriented, enjoy analyzing problems, and work well with a team. I am committed to developing my software testing skills in a systematic way.">ผมมีความละเอียดรอบคอบ ชอบวิเคราะห์ปัญหา และสามารถทำงานร่วมกับทีมได้ดี มุ่งมั่นพัฒนาทักษะการทดสอบซอฟต์แวร์อย่างเป็นระบบ</p>
       <p data-th="ผมฝึกทำ functional QA กับเว็บอีคอมเมิร์ซจำลอง โดยออกแบบและรันเทสต์ 28 ข้อใน Login, Register และ Cart & Checkout ใช้ค่าขอบเขต (boundary value) ทดสอบทั้งกรณีปกติและกรณีผิดพลาด บันทึกผลจริงที่หน้าจอ และเปิดข้อสงสัยที่ยังขัดแย้งกันไว้จนกว่าจะตรวจสอบเสร็จ" data-en="I practiced functional QA on a local e-commerce demo by designing and executing 28 test cases across Login, Register, and Cart & Checkout. I used boundary-value data, checked positive and negative flows, recorded the actual UI feedback, and kept a conflicting observation open until it could be verified.">ผมฝึกทำ functional QA กับเว็บอีคอมเมิร์ซจำลอง โดยออกแบบและรันเทสต์ 28 ข้อใน Login, Register และ Cart &amp; Checkout ใช้ค่าขอบเขต (boundary value) ทดสอบทั้งกรณีปกติและกรณีผิดพลาด บันทึกผลจริงที่หน้าจอ และเปิดข้อสงสัยที่ยังขัดแย้งกันไว้จนกว่าจะตรวจสอบเสร็จ</p>
       <p data-th="นอกจากงานทดสอบ ผมเคยทำงานออกแบบ UX/UI และแดชบอร์ดข้อมูล ดูได้ในหัวข้อโปรเจ็กต์อื่น ๆ" data-en="Besides testing, I have also worked on UX/UI design and a data dashboard. See Other projects below.">นอกจากงานทดสอบ ผมเคยทำงานออกแบบ UX/UI และแดชบอร์ดข้อมูล ดูได้ในหัวข้อโปรเจ็กต์อื่น ๆ</p>
     </div>
@@ -703,7 +703,6 @@ footer p{margin:0 0 4px}
     <div class="cr"><span class="lb" data-th="อีเมล" data-en="Email">อีเมล</span><span class="val mono" id="mail">thanakrit.pac@spumail.net</span><button type="button" class="copy" data-copy="mail" data-th="คัดลอก" data-en="Copy">คัดลอก</button></div>
     <div class="cr"><span class="lb" data-th="โทร" data-en="Phone">โทร</span><span class="val mono" id="tel">064-3386245</span><button type="button" class="copy" data-copy="tel" data-th="คัดลอก" data-en="Copy">คัดลอก</button></div>
     <div class="cr"><span class="lb" data-th="สังกัด" data-en="Faculty">สังกัด</span><span class="val" data-th="คณะเทคโนโลยีสารสนเทศ สาขาวิศวกรรมคอมพิวเตอร์ มหาวิทยาลัยศรีปทุม ชั้นปีที่ 4" data-en="Faculty of Information Technology, Computer Engineering, Sripatum University, 4th year">คณะเทคโนโลยีสารสนเทศ สาขาวิศวกรรมคอมพิวเตอร์ มหาวิทยาลัยศรีปทุม ชั้นปีที่ 4</span><span></span></div>
-    <div class="cr"><span class="lb" data-th="ประวัติย่อ (CV)" data-en="Curriculum Vitae">ประวัติย่อ (CV)</span><span class="val cv-links"><a class="btn quiet" href="cv/Thanakrit_Panich_QA_Tester_Intern_CV_TH.pdf" download="Thanakrit_Panich_QA_Tester_Intern_CV_TH.pdf" data-th="ดาวน์โหลด CV ภาษาไทย" data-en="Download Thai CV">ดาวน์โหลด CV ภาษาไทย</a><a class="btn quiet" href="cv/Thanakrit_Panich_QA_Tester_Intern_CV_EN.pdf" download="Thanakrit_Panich_QA_Tester_Intern_CV_EN.pdf" data-th="ดาวน์โหลด CV ภาษาอังกฤษ" data-en="Download English CV">ดาวน์โหลด CV ภาษาอังกฤษ</a></span><span></span></div>
   </div>
   <div id="toast" role="status"></div>
 </div></section>
